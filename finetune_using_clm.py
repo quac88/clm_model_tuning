@@ -121,11 +121,7 @@ def load_model_and_tokenizer(cfg: DictConfig):
     if tokenizer.pad_token is None and tokenizer.eos_token is not None:
         tokenizer.pad_token = tokenizer.eos_token
 
-    model = AutoModelForCausalLM.from_pretrained(
-        cfg.model.name,
-        from_tf=bool(".ckpt" in cfg.model.name),
-        config=config,
-    )
+    model = AutoModelForCausalLM.from_pretrained(model_name, device_map="balanced")
     model.resize_token_embeddings(len(tokenizer))
 
     return tokenizer, model
